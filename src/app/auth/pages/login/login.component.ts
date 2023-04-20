@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import Swal from 'sweetalert2';
+
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -26,10 +29,10 @@ export class LoginComponent {
     const { mail, pass } = this.miFormulario.value;
 
     this.authService.login(mail, pass).subscribe((valido) => {
-      if (valido) {
+      if (valido === true) {
         this.router.navigateByUrl('dashboard');
       } else {
-        // TODO: mensaje de error
+        Swal.fire('Error', valido, 'error');
       }
     });
   }

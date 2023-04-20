@@ -21,7 +21,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(mail: string, pass: string): Observable<boolean> {
+  login(mail: string, pass: string) {
     const url = `${this.baseURL}/auth`;
     const body = { mail, pass };
 
@@ -30,7 +30,7 @@ export class AuthService {
         this._usuario = resp.data!;
       }),
       map((resp) => resp.ok),
-      catchError((err) => of(false))
+      catchError((err) => of(err.error.msg))
     );
   }
 }
