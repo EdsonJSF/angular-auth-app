@@ -25,10 +25,12 @@ export class LoginComponent {
 
     const { mail, pass } = this.miFormulario.value;
 
-    this.authService.login(mail, pass).subscribe((resp) => {
-      console.log(resp);
+    this.authService.login(mail, pass).subscribe((valido) => {
+      if (valido) {
+        this.router.navigateByUrl('dashboard');
+      } else {
+        // TODO: mensaje de error
+      }
     });
-
-    // this.router.navigateByUrl('dashboard');
   }
 }
