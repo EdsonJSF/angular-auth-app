@@ -24,8 +24,6 @@ export class LoginComponent {
   ) {}
 
   login() {
-    console.log(this.miFormulario.value);
-
     const { mail, pass } = this.miFormulario.value;
 
     this.authService.login(mail, pass).subscribe((valido) => {
