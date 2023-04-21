@@ -27,15 +27,14 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, body).pipe(
       tap((resp) => {
-        this._usuario = resp.data!;
-        localStorage.setItem('token', this._usuario.token);
+        this.setUsuario(resp.data!);
       }),
       map((resp) => resp.ok),
       catchError((err) => of(err.error.msg))
     );
   }
 
-  validarToken() {
+  validarToken(): Observable<boolean> {
     const url = `${this.baseURL}/auth/renew`;
 
     const headers = new HttpHeaders().set(
@@ -43,6 +42,20 @@ export class AuthService {
       localStorage.getItem('token') || ''
     );
 
-    return this.http.get(url, { headers });
+    return this.http.get<AuthResponse>(url, { headers }).pipe(
+      map((resp) => {
+        this.setUsuario(resp.data!);
+
+        return resp.ok;
+      }),
+      catchError((err) => {
+        return of(false);
+      })
+    );
+  }
+
+  private setUsuario(usuario: Usuario) {
+    this._usuario = usuario;
+    localStorage.setItem('token', this._usuario.token);
   }
 }
