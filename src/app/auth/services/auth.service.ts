@@ -34,6 +34,10 @@ export class AuthService {
     );
   }
 
+  logout() {
+    localStorage.clear();
+  }
+
   validarToken(): Observable<boolean> {
     const url = `${this.baseURL}/auth/renew`;
 
