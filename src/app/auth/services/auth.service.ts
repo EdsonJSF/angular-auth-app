@@ -27,7 +27,7 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, body).pipe(
       tap((resp) => {
-        this.setUsuario(resp.data!);
+        this.setUsuario(resp);
       }),
       map((resp) => resp.ok),
       catchError((err) => of(err.error.msg))
@@ -40,7 +40,7 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, body).pipe(
       tap((resp) => {
-        this.setUsuario(resp.data!);
+        this.setUsuario(resp);
       }),
       map((resp) => resp.ok),
       catchError((err) => of(err.error.msg))
@@ -61,7 +61,7 @@ export class AuthService {
 
     return this.http.get<AuthResponse>(url, { headers }).pipe(
       map((resp) => {
-        this.setUsuario(resp.data!);
+        this.setUsuario(resp);
 
         return resp.ok;
       }),
@@ -71,8 +71,8 @@ export class AuthService {
     );
   }
 
-  private setUsuario(usuario: Usuario) {
-    this._usuario = usuario;
-    localStorage.setItem('token', this._usuario.token);
+  private setUsuario(resp: AuthResponse) {
+    this._usuario = resp.data!;
+    localStorage.setItem('token', resp.token!);
   }
 }
